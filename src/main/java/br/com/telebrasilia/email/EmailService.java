@@ -39,7 +39,7 @@ public class EmailService {
                 .ownerRef(empresa.getDsNoFantas())
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getEmail2())
-                .subject("Senha Telebrasília")
+                .subject("Acesso Telebrasília")
                 .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\n Senha : " + empresa.getSenha() + " \n\r\n " + "http://wwww.telebrasilia.com.br")
                 .build();
         
