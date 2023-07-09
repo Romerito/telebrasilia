@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.telebrasilia.dtos.EmpresaDTO;
+import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.responses.EmpresaResponse;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -40,8 +40,12 @@ public class EmpresaController {
     @Autowired
     EmpresaService empresaService;
 
-    public EmpresaController(EmpresaService empresaService) {
+    @Autowired
+    EmailService emailService;
+
+    public EmpresaController(EmpresaService empresaService, EmailService emailService) {
         this.empresaService = empresaService;
+        this.emailService = emailService;
     }
 
     /**
@@ -60,8 +64,9 @@ public class EmpresaController {
             Empresa empresa = new Empresa();
             BeanUtils.copyProperties(empresaDTO, empresa);
             empresa = empresaService.findByCNPJ(empresa);
+            emailService.send(empresa);
             empresa.add(linkTo(methodOn((EmpresaController.class)).findByCNPJ(empresaDTO)).withSelfRel());
-             LOGGER.info("Consulted ... CNPJ {} " ,  empresaDTO.getCnpj());
+            LOGGER.info("Consulted ... CNPJ {} " ,  empresaDTO.getCnpj());
             return EmpresaResponse.responseBuilder(HttpStatus.OK,  empresa);
         } catch (Exception e) {
             LOGGER.info("CNPJ ... {} " , empresaDTO.getCnpj());

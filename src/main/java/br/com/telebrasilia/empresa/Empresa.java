@@ -52,4 +52,5 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private LocalDateTime dtAdesao;
     private String nvEmpresa;
     private String coordenada;
+    private String senha;
 }
