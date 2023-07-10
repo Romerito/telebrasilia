@@ -40,7 +40,7 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getEmail2())
                 .subject("Acesso Telebrasília")
-                .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\n Senha : " + empresa.getSenha() + " \n\r\n " + "http://wwww.telebrasilia.com.br")
+                .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + "http://wwww.telebrasilia.com.br")
                 .build();
         
       BeanUtils.copyProperties(emailDTOSend, email);
