@@ -43,7 +43,7 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private String siteEmpresa;
     private String coNatureza;
     private Integer coCidade;
-    private String email2;
+    private String e_mail2;
     private String inscrMunicipal;
     private String dsComplemento;
     private String stEmpresa;
@@ -53,4 +53,5 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private String nvEmpresa;
     private String coordenada;
     private String senha;
+    private String email2;
 }
