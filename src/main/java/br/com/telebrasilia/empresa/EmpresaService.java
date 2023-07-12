@@ -15,8 +15,8 @@ public class EmpresaService {
     @Autowired
     EmpresaRepository empresaRepository;
     
-    public Empresa findByCNPJ(Empresa empresa){
-        return  empresaRepository.findEmpresaByCNPJ(empresa.getCnpj());
+    public Empresa findByCNPJ(String cnpj){
+        return  empresaRepository.findEmpresaByCNPJ(cnpj);
     }
 
     public Empresa findByCNPJAndSenha(String cnpj, String senha) {

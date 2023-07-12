@@ -20,9 +20,5 @@ public class LoginDTO {
     
     @NotBlank
     private String cnpj;
-
-    @NotBlank
     private String senha;
-
-    
 }

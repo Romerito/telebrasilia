@@ -7,15 +7,16 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.telebrasilia.dtos.LoginDTO;
@@ -54,25 +55,24 @@ public class EmpresaController {
      * @param LoginDTO
      * @return EmpresaResponse
     */
-    @ApiOperation(value = "Consultar por cnpj")
+    @ApiOperation(value = "Consultar por CNPJ")
         @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Senha consultada", response = Empresa.class),
         @ApiResponse(code = 400, message = "Erro ao consultar senha")
     })
-    @PostMapping(path = "/empresa/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> findByCNPJ(@RequestBody @Valid LoginDTO loginDTO) {
+    @GetMapping(path = "/empresa/")
+    public ResponseEntity<Object> findByCNPJ(@RequestParam(name = "cnpj") String cnpj) {
         try {
-            LOGGER.info("Consulting ... CNPJ {} " ,  loginDTO.getCnpj());
-            BeanUtils.copyProperties(loginDTO, empresa);
-            this.empresa = empresaService.findByCNPJ(empresa);
+            LOGGER.info("Consulting ... CNPJ {} " ,  cnpj);
+            empresa = empresaService.findByCNPJ(cnpj);
             emailService.send(empresa);
-            empresa.add(linkTo(methodOn((EmpresaController.class)).findByCNPJ(loginDTO)).withSelfRel());
+            empresa.add(linkTo(methodOn((EmpresaController.class)).findByCNPJ(cnpj)).withSelfRel());
             LOGGER.info("Consulted ... CNPJ {} " ,  empresa.getCnpj());
             return EmpresaResponse.responseBuilder(HttpStatus.OK,  empresa);
         } catch (Exception e) {
-            LOGGER.info("CNPJ ... {} " , loginDTO.getCnpj());
+            LOGGER.info("CNPJ ... {} " , cnpj);
             LOGGER.info("Error ... {} " , e.getMessage());
-            return EmpresaResponse.responseBuilder(HttpStatus.BAD_REQUEST, loginDTO);
+            return EmpresaResponse.responseBuilder(HttpStatus.BAD_REQUEST, empresa);
         }
     }
 
@@ -80,7 +80,7 @@ public class EmpresaController {
      * @param LoginDTO
      * @return EmpresaResponse
      */
-    @ApiOperation(value = "Consultar por cnpj e senha")
+    @ApiOperation(value = "Consultar por CNPJ e Senha")
         @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Login consultado", response = Empresa.class),
         @ApiResponse(code = 400, message = "Erro ao consultar login")
