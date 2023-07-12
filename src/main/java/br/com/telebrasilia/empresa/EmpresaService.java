@@ -4,8 +4,6 @@ package br.com.telebrasilia.empresa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.telebrasilia.dtos.EmailDTO;
-
 
 /**
  * @author  Romerito Alencar
@@ -18,7 +16,11 @@ public class EmpresaService {
     EmpresaRepository empresaRepository;
     
     public Empresa findByCNPJ(Empresa empresa){
-        return  empresaRepository.findByCNPJ(empresa.getCnpj());
-     }
+        return  empresaRepository.findEmpresaByCNPJ(empresa.getCnpj());
+    }
+
+    public Empresa findByCNPJAndSenha(String cnpj, String senha) {
+        return empresaRepository.findEmpresaByCNPJAndSenha(cnpj, senha);
+    }
 
 }

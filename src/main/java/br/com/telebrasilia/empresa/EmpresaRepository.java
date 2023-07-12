@@ -13,6 +13,9 @@ import org.springframework.stereotype.Repository;
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     @Query("select e from Empresa e where e.cnpj = :cnpj")
-    Empresa findByCNPJ(String cnpj);
+    Empresa findEmpresaByCNPJ(String cnpj);
+
+    @Query("select e from Empresa e where e.cnpj = :cnpj and e.senha = :senha")
+    Empresa findEmpresaByCNPJAndSenha(String cnpj, String senha);
  
 }
