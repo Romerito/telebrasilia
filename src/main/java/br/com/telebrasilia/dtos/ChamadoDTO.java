@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChamadoDTO {
-    
+
     private Long idChamado;
     private Long coCompania;
     private Long idEmpresa;
@@ -25,5 +25,5 @@ public class ChamadoDTO {
     private String lcAtendimento;
     private String coUf;
     private String noArquivo;
-    
+
 }

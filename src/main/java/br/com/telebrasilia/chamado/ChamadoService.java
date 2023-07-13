@@ -26,6 +26,8 @@ public class ChamadoService {
         empresa = empresaRepository.findEmpresaByIdEmpresa(chamado.getIdEmpresa());
         chamado.setIdEmpresa(chamado.getIdEmpresa());
         chamado.setNoSoliccitante(empresa.getDsNoFantas());
+        //salvar protocolo
+        //enviar email
         return  chamadoRepository.save(chamado);
     }
 

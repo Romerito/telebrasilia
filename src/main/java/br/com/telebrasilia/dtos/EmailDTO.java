@@ -13,7 +13,7 @@ import lombok.Data;
 @Builder
 @Data
 public class EmailDTO {
-    
+
     @NotBlank
     private String ownerRef;
     @NotBlank
