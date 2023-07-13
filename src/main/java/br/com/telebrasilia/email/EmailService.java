@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.telebrasilia.chamado.Chamado;
 import br.com.telebrasilia.dtos.EmailDTO;
 import br.com.telebrasilia.empresa.Empresa;
 import br.com.telebrasilia.enums.EmailStatus;
@@ -32,6 +33,21 @@ public class EmailService {
    RestTemplate restTemplate = new RestTemplate();
 
     private static String emailFrom  = "romerito.alencar@gmail.com";
+    
+    public Email send(Chamado chamado) {
+      Email email = new Email();
+      EmailDTO emailDTOSend = EmailDTO.builder()
+               // .ownerRef(empresa.getDsNoFantas())
+                .emailFrom(emailFrom)
+              //  .emailTo(empresa.getEmail2())
+                .subject("Acesso Telebrasília")
+               // .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + "http://wwww.telebrasilia.com.br")
+                .build();
+        
+      BeanUtils.copyProperties(emailDTOSend, email);
+      return  send(email);
+     }
+
     
     public Email send(Empresa empresa) {
       Email email = new Email();
