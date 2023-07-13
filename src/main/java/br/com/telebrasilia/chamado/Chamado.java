@@ -1,7 +1,5 @@
 package br.com.telebrasilia.chamado;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,7 +30,7 @@ public class Chamado  extends RepresentationModel<Chamado> {
     private Long coCompania;
     private Long idEmpresa;
     private Long idCliente;
-    private String noSolicitante;
+    private String noSoliccitante;
     private String tpChamado;
     private String dsChamado;
     private String lcAtendimento;

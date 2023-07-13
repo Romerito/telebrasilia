@@ -1,6 +1,5 @@
 package br.com.telebrasilia.responses;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +10,10 @@ import org.springframework.http.ResponseEntity;
  * @author  Romerito Alencar
  */
 
-public class EmpresaResponse {
 
-        private EmpresaResponse() {}
+public class Response {
+    
+        private Response() {}
 
         public static ResponseEntity<Object> responseBuilder(HttpStatus httpStatus, Object responObject) {
                 Map<String, Object> response = new HashMap<>();

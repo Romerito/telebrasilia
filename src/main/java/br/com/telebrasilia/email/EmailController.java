@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.telebrasilia.dtos.EmailDTO;
-import br.com.telebrasilia.responses.EmailResponse;
+import br.com.telebrasilia.responses.Response;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -47,7 +47,7 @@ public class EmailController {
 
     /**
      * @param EmailDTO
-     * @return EmailResponse
+     * @return Response
     */
     @ApiOperation(value = "Salva o email enviado")
         @ApiResponses(value = {
@@ -63,11 +63,11 @@ public class EmailController {
             email = emailService.send(email);
             email.add(linkTo(methodOn((EmailController.class)).send(emailDTO)).withSelfRel());
             LOGGER.info("Sent to... {} " ,  emailDTO.getEmailTo());
-            return EmailResponse.responseBuilder(HttpStatus.CREATED,  email);
+            return Response.responseBuilder(HttpStatus.CREATED,  email);
         } catch (Exception e) {
             LOGGER.info("Email ... {} " , emailDTO.getEmailTo());
             LOGGER.info("Error ... {} " , e.getMessage());
-            return EmailResponse.responseBuilder(HttpStatus.BAD_REQUEST, emailDTO);
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, emailDTO);
         }
     }
 

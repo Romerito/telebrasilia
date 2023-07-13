@@ -3,6 +3,9 @@ package br.com.telebrasilia.chamado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.telebrasilia.empresa.Empresa;
+import br.com.telebrasilia.empresa.EmpresaRepository;
+
 
 /**
  * @author  Romerito Alencar
@@ -13,8 +16,16 @@ public class ChamadoService {
     
     @Autowired
     ChamadoRepository chamadoRepository;
+
+    @Autowired
+    EmpresaRepository empresaRepository;
+
+    Empresa empresa = new Empresa();
     
     public Chamado save(Chamado chamado){
+        empresa = empresaRepository.findEmpresaByIdEmpresa(chamado.getIdEmpresa());
+        chamado.setIdEmpresa(chamado.getIdEmpresa());
+        chamado.setNoSoliccitante(empresa.getDsNoFantas());
         return  chamadoRepository.save(chamado);
     }
 

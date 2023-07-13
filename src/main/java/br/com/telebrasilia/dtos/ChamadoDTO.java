@@ -19,7 +19,7 @@ public class ChamadoDTO {
     private Long coCompania;
     private Long idEmpresa;
     private Long idCliente;
-    private String noSolicitante;
+    private String noSoliccitante;
     private String tpChamado;
     private String dsChamado;
     private String lcAtendimento;

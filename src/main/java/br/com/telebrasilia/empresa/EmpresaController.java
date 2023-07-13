@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.telebrasilia.dtos.LoginDTO;
 import br.com.telebrasilia.email.EmailService;
-import br.com.telebrasilia.responses.EmpresaResponse;
+import br.com.telebrasilia.responses.Response;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -53,7 +53,7 @@ public class EmpresaController {
 
     /**
      * @param LoginDTO
-     * @return EmpresaResponse
+     * @return Response
     */
     @ApiOperation(value = "Consultar por CNPJ")
         @ApiResponses(value = {
@@ -68,17 +68,17 @@ public class EmpresaController {
             emailService.send(empresa);
             empresa.add(linkTo(methodOn((EmpresaController.class)).findByCNPJ(cnpj)).withSelfRel());
             LOGGER.info("Consulted ... CNPJ {} " ,  empresa.getCnpj());
-            return EmpresaResponse.responseBuilder(HttpStatus.OK,  empresa);
+            return Response.responseBuilder(HttpStatus.OK,  empresa);
         } catch (Exception e) {
             LOGGER.info("CNPJ ... {} " , cnpj);
             LOGGER.info("Error ... {} " , e.getMessage());
-            return EmpresaResponse.responseBuilder(HttpStatus.BAD_REQUEST, empresa);
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, empresa);
         }
     }
 
     /**
      * @param LoginDTO
-     * @return EmpresaResponse
+     * @return Response
      */
     @ApiOperation(value = "Consultar por CNPJ e Senha")
         @ApiResponses(value = {
@@ -92,11 +92,11 @@ public class EmpresaController {
             this.empresa = empresaService.findByCNPJAndSenha(loginDTO.getCnpj(), loginDTO.getSenha());
             empresa.add(linkTo(methodOn((EmpresaController.class)).findEmpresaByCNPJAndSenha(loginDTO)).withSelfRel());
             LOGGER.info("Consulted ... Login {} " ,  empresa.getCnpj());
-            return EmpresaResponse.responseBuilder(HttpStatus.OK,  empresa);
+            return Response.responseBuilder(HttpStatus.OK,  empresa);
         } catch (Exception e) {
             LOGGER.info("Login ... {} " , loginDTO.getCnpj());
             LOGGER.info("Error ... {} " , e.getMessage());
-            return EmpresaResponse.responseBuilder(HttpStatus.BAD_REQUEST, loginDTO);
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, loginDTO);
         }
     }
 
