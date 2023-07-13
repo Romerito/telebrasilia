@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginDTO {
     
-    @NotBlank
     private String cnpj;
     private String senha;
 }
