@@ -1,8 +1,6 @@
 package br.com.telebrasilia.dtos;
 
 
-import javax.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
