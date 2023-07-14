@@ -4,9 +4,12 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.empresa.Empresa;
 import br.com.telebrasilia.empresa.EmpresaRepository;
 import br.com.telebrasilia.protocolo.Protocolo;
@@ -19,6 +22,8 @@ import br.com.telebrasilia.protocolo.ProtocoloRepository;
 
 @Service
 public class ChamadoService {
+
+        private static final Logger LOGGER = LogManager.getLogger(ChamadoService.class);
     
     @Autowired
     ChamadoRepository chamadoRepository;
@@ -28,6 +33,9 @@ public class ChamadoService {
 
     @Autowired
     ProtocoloRepository protocoloRepository;
+
+    @Autowired
+    EmailService emailService;
 
     Empresa empresa = new Empresa();
 
@@ -52,9 +60,11 @@ public class ChamadoService {
         protocolo.setObservacao("PORTAL TELEBRASILIA");
         protocolo = protocoloRepository.save(protocolo);
       
-
-        System.out.println("PROTOCOLO CRIADO................ " + protocolo.getIdProtocolo());
-        //enviar email
+        /**salvar protocolo */
+        emailService.send(protocolo, empresa, chamado);
+        LOGGER.info("NÚMERO DO PROTOCOLO: {}......  ID_PROTOCOLO {}",  protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
+        
+        /**salvar chamado */
         return  chamadoRepository.save(chamado);
     }
 

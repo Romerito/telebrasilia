@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import br.com.telebrasilia.chamado.Chamado;
 import br.com.telebrasilia.dtos.EmailDTO;
 import br.com.telebrasilia.empresa.Empresa;
 import br.com.telebrasilia.enums.EmailStatus;
+import br.com.telebrasilia.protocolo.Protocolo;
 
 
 /**
@@ -30,23 +30,35 @@ public class EmailService {
   JavaMailSender emailSender;
 
 
-   RestTemplate restTemplate = new RestTemplate();
-
     private static String emailFrom  = "romerito.alencar@gmail.com";
+    private static String www  = "http://wwww.telebrasilia.com.br";
     
-    public Email send(Chamado chamado) {
-      Email email = new Email();
-      EmailDTO emailDTOSend = EmailDTO.builder()
-               // .ownerRef(empresa.getDsNoFantas())
+    public Email send(Protocolo protocolo, Empresa empresa, Chamado chamado) {
+      Email emailTelebrasilia = new Email();
+      EmailDTO emailTelebrasiliaSend = EmailDTO.builder()
+                .ownerRef(empresa.getDsNoFantas())
                 .emailFrom(emailFrom)
-              //  .emailTo(empresa.getEmail2())
-                .subject("Acesso Telebrasília")
-               // .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + "http://wwww.telebrasilia.com.br")
+                .emailTo(emailFrom)
+                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para respnder " + www)
                 .build();
         
-      BeanUtils.copyProperties(emailDTOSend, email);
-      return  send(email);
-     }
+      BeanUtils.copyProperties(emailTelebrasiliaSend, emailTelebrasilia);
+      send(emailTelebrasilia);
+    
+      Email emailCliente = new Email();
+      EmailDTO emailEmpresaSend = EmailDTO.builder()
+                .ownerRef("Telebrasília")
+                .emailFrom(emailFrom)
+                .emailTo(empresa.getE_mail2())
+                .subject("PROTOCOLO TELEBRASíLIA" + protocolo.getNuProtocolo())
+                .text("Protocolo de atendimento criado"  + " \n \r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .build();
+        
+      BeanUtils.copyProperties(emailEmpresaSend, emailCliente);
+      return  send(emailCliente);
+    
+    }
 
     
     public Email send(Empresa empresa) {
