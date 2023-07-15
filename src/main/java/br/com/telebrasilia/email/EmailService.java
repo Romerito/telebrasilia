@@ -51,8 +51,8 @@ public class EmailService {
                 .ownerRef("Telebrasília")
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
-                .subject("PROTOCOLO TELEBRASíLIA" + protocolo.getNuProtocolo())
-                .text("Protocolo de atendimento criado"  + " \n \r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
       BeanUtils.copyProperties(emailEmpresaSend, emailCliente);

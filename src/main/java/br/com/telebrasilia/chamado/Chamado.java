@@ -36,4 +36,5 @@ public class Chamado  extends RepresentationModel<Chamado> {
     private String lcAtendimento;
     private String coUf;
     private String noArquivo;
+    
 }

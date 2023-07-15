@@ -25,5 +25,5 @@ public class ChamadoDTO {
     private String lcAtendimento;
     private String coUf;
     private String noArquivo;
-
+    private String cnpjReceveid;
 }
