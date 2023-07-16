@@ -2,6 +2,7 @@ package br.com.telebrasilia.chamado;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +33,9 @@ public class ChamadoService {
 
     @Autowired
     ProtocoloRepository protocoloRepository;
+
+    @Autowired
+    ChamadoRepositoryImpl chamadoRepositoryImpl;
 
     @Autowired
     EmailService emailService;
@@ -67,6 +71,10 @@ public class ChamadoService {
         
         /**salvar chamado */
         return  chamadoRepository.save(chamado);
+    }
+
+    public List<Chamado>  getChamados(String stProtocolo, String nuProtocolo) {
+      return chamadoRepositoryImpl.getChamados(stProtocolo, nuProtocolo);
     }
 
 }

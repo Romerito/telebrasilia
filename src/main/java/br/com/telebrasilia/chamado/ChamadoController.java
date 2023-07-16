@@ -4,6 +4,8 @@ package br.com.telebrasilia.chamado;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,11 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import br.com.telebrasilia.dtos.ChamadoDTO;
 import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.responses.Response;
@@ -45,6 +50,8 @@ public class ChamadoController {
     EmailService emailService;
 
     private Chamado chamado = new  Chamado();
+
+    private List<Chamado> chamados = new ArrayList<>();
 
     public ChamadoController(ChamadoService chamadoService, EmailService emailService) {
         this.chamadoService = chamadoService;
@@ -76,5 +83,28 @@ public class ChamadoController {
         }
     }
 
+     /**
+     * @param ChamadoDTO
+     * @return ChamadoResponse
+     */
+    @ApiOperation(value = "Consultar chamados")
+        @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Chamados consultados", response = Chamado.class),
+        @ApiResponse(code = 400, message = "Erro ao consultar chamados")
+    })
+    @GetMapping(path = "/chamado/")
+    public ResponseEntity<Object> getChamados(@RequestParam(name = "stProtocolo") String stProtocolo, @RequestParam(name = "nuProtocolo") String nuProtocolo) {
+        try {
+            LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
+            chamados = chamadoService.getChamados(stProtocolo, nuProtocolo);
+         //   chamado.add(linkTo(methodOn((ChamadoController.class)).getChamados(stProtocolo, nuProtocolo)).withSelfRel());
+            LOGGER.info("Consultado ... Chamados {} " ,  nuProtocolo);
+            return Response.responseBuilder(HttpStatus.OK,  nuProtocolo);
+        } catch (Exception e) {
+            LOGGER.info("Consultar chamados ... {} " , nuProtocolo);
+            LOGGER.info("Error ... {} " , e.getMessage());
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, nuProtocolo);
+        }
+    }
     
 }
