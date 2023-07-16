@@ -1,7 +1,6 @@
 package br.com.telebrasilia.chamado;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,9 +47,11 @@ public class ChamadoService {
         chamado.setNoSoliccitante(empresa.getDsNoFantas());
 
         /**salvar protocolo */
+        this.protocolo = new Protocolo();
+        this.protocolo = protocoloRepository.save(protocolo);
         protocolo.setCpfCnpj(empresa.getCnpj());
         LocalDateTime date = LocalDateTime.now();
-        protocolo.setNuProtocolo("P000" + date.getYear() + "" + date.getMonth().getValue() + "" + date.getDayOfMonth() + "" + date.getMinute() + "" + date.getSecond() + "");
+        protocolo.setNuProtocolo("P000" + date.getYear() + "" + date.getMonth().getValue() + "" + date.getDayOfMonth() + "" + date.getMinute() + "" + date.getSecond() + "" + protocolo.getIdProtocolo() + "" );
         protocolo.setNoSolicitante(empresa.getDsNoFantas());
         protocolo.setTpSolicitacao(chamado.getTpChamado());
         Date data = new Date(System.currentTimeMillis());
@@ -58,10 +59,10 @@ public class ChamadoService {
         protocolo.setStProtocolo("ABERTO");
         protocolo.setCoUsuario("TELEBRASILIA");
         protocolo.setObservacao("PORTAL TELEBRASILIA");
-        protocolo = protocoloRepository.save(protocolo);
+        this.protocolo = protocoloRepository.save(protocolo);
       
         /**salvar protocolo */
-        emailService.send(protocolo, empresa, chamado);
+      //  emailService.send(protocolo, empresa, chamado);
         LOGGER.info("NÚMERO DO PROTOCOLO: {}......  ID_PROTOCOLO {}",  protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
         
         /**salvar chamado */
