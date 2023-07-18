@@ -71,8 +71,7 @@ public class ChamadoController {
     public ResponseEntity<Object> save(@RequestBody @Valid ChamadoDTO chamadoDTO) {
         try {
             LOGGER.info("Saveing ... Chamado {} " ,  chamadoDTO);
-            BeanUtils.copyProperties(chamadoDTO, chamado);
-            chamado = chamadoService.save(chamado);
+            chamado = chamadoService.save(chamadoDTO);
             chamado.add(linkTo(methodOn((ChamadoController.class)).save(chamadoDTO)).withSelfRel());
             LOGGER.info("Saved ... Chamado {} " ,  chamado);
             return Response.responseBuilder(HttpStatus.OK,  chamado);

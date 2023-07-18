@@ -1,5 +1,7 @@
 package br.com.telebrasilia.dtos;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +27,5 @@ public class ChamadoDTO {
     private String lcAtendimento;
     private String coUf;
     private String noArquivo;
-    private String cnpjReceveid;
+    private MultipartFile noArquivos;
 }
