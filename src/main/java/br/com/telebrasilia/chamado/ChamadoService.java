@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.telebrasilia.dtos.ChamadoDTO;
 import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.empresa.Empresa;
 import br.com.telebrasilia.empresa.EmpresaRepository;

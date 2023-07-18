@@ -97,8 +97,11 @@ public class ChamadoController {
         try {
             LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
             chamados = chamadoService.getChamados(stProtocolo, nuProtocolo);
+            for (Chamado chamado : chamados) {
+                System.out.println("Tipo do chamado: " + chamado.getTpChamado());
+            }
          //   chamado.add(linkTo(methodOn((ChamadoController.class)).getChamados(stProtocolo, nuProtocolo)).withSelfRel());
-            LOGGER.info("Consultado ... Chamados {} " ,  nuProtocolo);
+           // LOGGER.info("Consultado ... Chamados {} " ,  chamados.toString());
             return Response.responseBuilder(HttpStatus.OK,  nuProtocolo);
         } catch (Exception e) {
             LOGGER.info("Consultar chamados ... {} " , nuProtocolo);
