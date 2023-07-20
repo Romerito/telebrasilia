@@ -3,11 +3,13 @@ package br.com.telebrasilia.empresa;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.hateoas.RepresentationModel;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +36,7 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private String dsEndereco;
     private String dsNoBairro;
     private String coCep;
+    @Column(name = "CNPJ")
     private String cnpj;
     private String inscEstadual;
     private String dsRazSocial;

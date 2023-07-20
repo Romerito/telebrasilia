@@ -2,6 +2,7 @@ package br.com.telebrasilia.protocolo;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +30,7 @@ public class Protocolo  extends RepresentationModel<Protocolo> {
     @Id
     @GeneratedValue
 	private Long idProtocolo;
+	@Column(name = "CPF_CNPJ")
     private String cpfCnpj; 
 	private Long idCliente; 
 	private String nuProtocolo;

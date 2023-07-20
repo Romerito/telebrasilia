@@ -7,6 +7,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Tuple;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.telebrasilia.dtos.ChamadoDTO;
+import br.com.telebrasilia.dtos.LoginDTO;
 import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.responses.Response;
 import io.swagger.annotations.ApiOperation;
@@ -50,7 +53,7 @@ public class ChamadoController {
 
     private Chamado chamado = new  Chamado();
 
-    private List<Chamado> chamados = new ArrayList<>();
+    private List<Tuple> chamados = new ArrayList<>();
 
     public ChamadoController(ChamadoService chamadoService, EmailService emailService) {
         this.chamadoService = chamadoService;
@@ -97,8 +100,8 @@ public class ChamadoController {
         try {
            // LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
             chamados = chamadoService.getChamados(chamadoDTO);
-            for (Chamado chamado : chamados) {
-                System.out.println("Tipo do chamado: " + chamado.getTpChamado());
+            for (Tuple chamado : chamados) {
+                System.out.println("Tipo do chamado: {}" + chamado);
             }
          //   chamado.add(linkTo(methodOn((ChamadoController.class)).getChamados(stProtocolo, nuProtocolo)).withSelfRel());
            // LOGGER.info("Consultado ... Chamados {} " ,  chamados.toString());

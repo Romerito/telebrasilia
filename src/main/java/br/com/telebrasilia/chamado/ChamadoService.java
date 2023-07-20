@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Tuple;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +100,7 @@ public class ChamadoService {
     return chamadoRepository.save(chamado);
   }
 
-  public List<Chamado> getChamados(ChamadoDTO chamadoDTO) {
+  public List<Tuple> getChamados(ChamadoDTO chamadoDTO) {
     return chamadoRepositoryImpl.getChamados(chamadoDTO);
   }
 
