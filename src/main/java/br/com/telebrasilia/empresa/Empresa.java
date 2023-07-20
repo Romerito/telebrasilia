@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -36,7 +37,6 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private String dsEndereco;
     private String dsNoBairro;
     private String coCep;
-    @Column(name = "CNPJ")
     private String cnpj;
     private String inscEstadual;
     private String dsRazSocial;
