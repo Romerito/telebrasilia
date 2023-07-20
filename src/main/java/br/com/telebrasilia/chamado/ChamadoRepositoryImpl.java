@@ -3,13 +3,7 @@ package br.com.telebrasilia.chamado;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import br.com.telebrasilia.empresa.Empresa;
-import nonapi.io.github.classgraph.utils.Join;
+import javax.persistence.Query;
 
 public class ChamadoRepositoryImpl {
 
@@ -21,13 +15,17 @@ public class ChamadoRepositoryImpl {
 
 
     public List<Chamado> getChamados(String stProtocolo, String nuProtocolo) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+      /*   CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Chamado> query = criteriaBuilder.createQuery(Chamado.class);
-        Root<Chamado> chamado = query.from(Chamado.class);
-   //     Root<Empresa> empresa = query.from(Empresa.class);
-      //  Join.join(empresa.get("idEmpresa"), chamado.get("idEmpresa"));
-        query.select(chamado).distinct(true);
-        TypedQuery<Chamado> typedQuery = entityManager.createQuery(query);
+        Root<Chamado> root = query.from(Chamado.class);
+   
+        Join<Chamado, Empresa> idEmpresa = root.join("id_empresa", JoinType.INNER); */
+       // Join<Book, Genre> genre = root.join("genres");
+        
+      
+       String query = " select * ( select distinct(p.id_protocolo), p.* from abertura_chamado c join empresa e on  c.id_empresa = e.id_empresa join protocolo_atendimento p on  p.cpf_cnpj = e.cnpj ) ";
+      
+        Query typedQuery = entityManager.createQuery(query);
         List<Chamado> resultList = typedQuery.getResultList();
         return resultList;
     }

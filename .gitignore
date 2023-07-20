@@ -5,6 +5,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
+### UPLOADS ###
+/uploads/
+/chamados/
+
 ### STS ###
 .apt_generated
 .classpath

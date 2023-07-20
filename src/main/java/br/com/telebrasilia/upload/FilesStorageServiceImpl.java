@@ -28,6 +28,30 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
+  
+  @Override
+  public String save(MultipartFile[] files, String noProtocolo) {
+    
+ 
+
+    try {
+      final Path roots = Paths.get("chamados\\" + noProtocolo);
+      Files.createDirectories(roots);
+  
+      for (MultipartFile file : files) {
+        Files.copy(file.getInputStream(), roots.resolve(file.getOriginalFilename()));
+      }
+      return roots.toAbsolutePath().toString();
+  
+    } catch (Exception e) {
+      if (e instanceof FileAlreadyExistsException) {
+        throw new RuntimeException("A file of that name already exists.");
+      }
+
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+
   @Override
   public void save(MultipartFile file) {
     try {

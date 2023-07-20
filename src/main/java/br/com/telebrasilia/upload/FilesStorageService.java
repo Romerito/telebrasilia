@@ -7,9 +7,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FilesStorageService {
+  
   public void init();
 
   public void save(MultipartFile file);
+
+  public String save(MultipartFile[] file, String noProtocolo);
 
   public Resource load(String filename);
 
