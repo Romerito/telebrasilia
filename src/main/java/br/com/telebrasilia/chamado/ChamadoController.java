@@ -71,7 +71,7 @@ public class ChamadoController {
             LOGGER.info("Saveing ... Chamado {} ... Empresa {} " ,  dsChamado, idEmpresa);
             chamado = chamadoService.save(files, tpChamado, dsChamado, idEmpresa, noArquivo);
             chamado.add(linkTo(methodOn((ChamadoController.class)).save(files, tpChamado, dsChamado, idEmpresa, noArquivo)).withSelfRel());
-            LOGGER.info("Saved ... Chamado {} " ,  tpChamado);
+            LOGGER.info("Saved ... Chamado Idchamado... {} " ,  chamado.getIdChamado());
             return Response.responseBuilder(HttpStatus.OK,  chamado);
         } catch (Exception e) {
             LOGGER.info("Chamado ... {} " , tpChamado);
