@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.telebrasilia.dtos.ChamadoDTO;
 import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.empresa.Empresa;
 import br.com.telebrasilia.empresa.EmpresaRepository;
@@ -57,7 +58,7 @@ public class ChamadoService {
     chamado = new Chamado();
     chamado.setTpChamado(tpChamado);
     chamado.setDsChamado(dsChamado);
-    chamado.setIdEmpresa(idEmpresa);
+    chamado.setIdEmpresa(empresa);
     chamado.setNoSoliccitante(empresa.getDsNoFantas());
     chamado.setNoArquivo(noArquivo);
 
@@ -97,8 +98,8 @@ public class ChamadoService {
     return chamadoRepository.save(chamado);
   }
 
-  public List<Chamado> getChamados(String stProtocolo, String nuProtocolo) {
-    return chamadoRepositoryImpl.getChamados(stProtocolo, nuProtocolo);
+  public List<Chamado> getChamados(ChamadoDTO chamadoDTO) {
+    return chamadoRepositoryImpl.getChamados(chamadoDTO);
   }
 
 }

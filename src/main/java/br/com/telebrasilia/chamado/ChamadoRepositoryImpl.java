@@ -4,6 +4,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+
+import br.com.telebrasilia.dtos.ChamadoDTO;
+import br.com.telebrasilia.empresa.Empresa;
 
 public class ChamadoRepositoryImpl {
 
@@ -14,18 +22,19 @@ public class ChamadoRepositoryImpl {
     }
 
 
-    public List<Chamado> getChamados(String stProtocolo, String nuProtocolo) {
-      /*   CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Chamado> query = criteriaBuilder.createQuery(Chamado.class);
-        Root<Chamado> root = query.from(Chamado.class);
-   
-        Join<Chamado, Empresa> idEmpresa = root.join("id_empresa", JoinType.INNER); */
-       // Join<Book, Genre> genre = root.join("genres");
+    public List<Chamado> getChamados(ChamadoDTO chamadoDTO) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createQuery(Tuple.class);
+        Root<Chamado> root = criteriaQuery.from(Chamado.class);
+        Join<Chamado, Empresa> empresa = root.join("idEmpresa"); 
+
+
+        criteriaQuery
+                .multiselect(root, empresa)
+                .where(
+                        criteriaBuilder.equal(empresa.get("idEmpresa"), chamadoDTO.getIdEmpresa()));
         
-      
-       String query = " select * ( select distinct(p.id_protocolo), p.* from abertura_chamado c join empresa e on  c.id_empresa = e.id_empresa join protocolo_atendimento p on  p.cpf_cnpj = e.cnpj ) ";
-      
-        Query typedQuery = entityManager.createQuery(query);
+        Query typedQuery = entityManager.createQuery(criteriaQuery);
         List<Chamado> resultList = typedQuery.getResultList();
         return resultList;
     }

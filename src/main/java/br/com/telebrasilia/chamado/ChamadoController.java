@@ -7,6 +7,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.telebrasilia.dtos.ChamadoDTO;
 import br.com.telebrasilia.email.EmailService;
 import br.com.telebrasilia.responses.Response;
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +66,7 @@ public class ChamadoController {
         @ApiResponse(code = 201, message = "Chamado criado", response = Chamado.class),
         @ApiResponse(code = 400, message = "Erro ao criar chamado")
     })
-    @PostMapping(path = "/chamado/",  consumes="*/*")
+    @PostMapping(path = "/chamado/")
     public ResponseEntity<Object> save(@RequestParam("files") MultipartFile[] files, 
     @RequestParam("tpChamado") String tpChamado, @RequestParam("dsChamado") String dsChamado,
     @RequestParam("idEmpresa") Long idEmpresa, @RequestParam("noArquivo") String noArquivo) {
@@ -89,21 +92,21 @@ public class ChamadoController {
         @ApiResponse(code = 200, message = "Chamados consultados", response = Chamado.class),
         @ApiResponse(code = 400, message = "Erro ao consultar chamados")
     })
-    @GetMapping(path = "/chamados/")
-    public ResponseEntity<Object> getChamados(@RequestParam(name = "stProtocolo") String stProtocolo, @RequestParam(name = "nuProtocolo") String nuProtocolo) {
+    @PostMapping(path = "/chamados/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> consultarChamados(@RequestBody @Valid ChamadoDTO chamadoDTO) {
         try {
-            LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
-            chamados = chamadoService.getChamados(stProtocolo, nuProtocolo);
+           // LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
+            chamados = chamadoService.getChamados(chamadoDTO);
             for (Chamado chamado : chamados) {
                 System.out.println("Tipo do chamado: " + chamado.getTpChamado());
             }
          //   chamado.add(linkTo(methodOn((ChamadoController.class)).getChamados(stProtocolo, nuProtocolo)).withSelfRel());
            // LOGGER.info("Consultado ... Chamados {} " ,  chamados.toString());
-            return Response.responseBuilder(HttpStatus.OK,  nuProtocolo);
+            return Response.responseBuilder(HttpStatus.OK,  chamadoDTO);
         } catch (Exception e) {
-            LOGGER.info("Consultar chamados ... {} " , nuProtocolo);
+          //  LOGGER.info("Consultar chamados ... {} " , nuProtocolo);
             LOGGER.info("Error ... {} " , e.getMessage());
-            return Response.responseBuilder(HttpStatus.BAD_REQUEST, nuProtocolo);
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, chamadoDTO);
         }
     }
     

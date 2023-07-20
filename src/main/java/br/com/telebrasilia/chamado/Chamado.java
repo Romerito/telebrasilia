@@ -3,10 +3,12 @@ package br.com.telebrasilia.chamado;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import br.com.telebrasilia.empresa.Empresa;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,8 @@ public class Chamado  extends RepresentationModel<Chamado> {
     @GeneratedValue
     private Long idChamado;
     private Long coCompania;
-    private Long idEmpresa;
+    @ManyToOne()
+    private Empresa idEmpresa;
     private Long idCliente;
     private String noSoliccitante;
     private String tpChamado;
