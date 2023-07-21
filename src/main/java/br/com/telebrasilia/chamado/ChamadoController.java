@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.telebrasilia.dtos.ChamadoDTO;
-import br.com.telebrasilia.dtos.LoginDTO;
 import br.com.telebrasilia.email.EmailService;
+import br.com.telebrasilia.protocolo.Protocolo;
 import br.com.telebrasilia.responses.Response;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -98,16 +97,38 @@ public class ChamadoController {
     @PostMapping(path = "/chamados/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> consultarChamados(@RequestBody @Valid ChamadoDTO chamadoDTO) {
         try {
-           // LOGGER.info("Consultando ... Chamados {} " ,  nuProtocolo);
+            LOGGER.info("Consultando ... Chamados .... Empresa {} " ,  chamadoDTO.getIdEmpresa());
             chamados = chamadoService.getChamados(chamadoDTO);
-            for (Tuple chamado : chamados) {
-                System.out.println("Tipo do chamado: {}" + chamado);
-            }
-         //   chamado.add(linkTo(methodOn((ChamadoController.class)).getChamados(stProtocolo, nuProtocolo)).withSelfRel());
-           // LOGGER.info("Consultado ... Chamados {} " ,  chamados.toString());
-            return Response.responseBuilder(HttpStatus.OK,  chamadoDTO);
+            
+            List<ChamadoDTO> listaChamadoDTOs = new ArrayList<>();
+            
+            Chamado filterChamdoDTO;
+            Protocolo filterProtocoloDTO;
+
+            for (Tuple tuple : chamados) {
+                   chamadoDTO = new ChamadoDTO();
+
+                   filterChamdoDTO = tuple.get(0, Chamado.class);
+                   chamadoDTO.setIdChamado(filterChamdoDTO.getIdChamado());
+                   chamado.setTpChamado(filterChamdoDTO.getTpChamado());
+                   chamadoDTO.setDsChamado(filterChamdoDTO.getDsChamado());
+                   chamadoDTO.setNoArquivo(filterChamdoDTO.getNoArquivo());
+                   chamadoDTO.setNoSoliccitante(filterChamdoDTO.getNoSolicitante());    
+                   chamadoDTO.setIdEmpresa(filterChamdoDTO.getIdEmpresa().getIdEmpresa());
+                   chamadoDTO.setIdProtocolo(filterChamdoDTO.getIdProtocolo().getIdProtocolo());
+  
+                   filterProtocoloDTO = tuple.get(2, Protocolo.class);
+                   chamadoDTO.setNuProtocolo(filterProtocoloDTO.getNuProtocolo());
+                   chamadoDTO.setStProtocolo(filterProtocoloDTO.getStProtocolo());
+
+                   listaChamadoDTOs.add(chamadoDTO);
+                }
+           
+            chamado.add(linkTo(methodOn((ChamadoController.class)).consultarChamados(chamadoDTO)).withSelfRel());
+            LOGGER.info("Consultado ... Chamados {} " ,  listaChamadoDTOs);
+            return Response.responseBuilder(HttpStatus.OK,  listaChamadoDTOs);
         } catch (Exception e) {
-          //  LOGGER.info("Consultar chamados ... {} " , nuProtocolo);
+            LOGGER.info("Consultar chamados ... {} ... Empresa " , chamadoDTO.getIdEmpresa());
             LOGGER.info("Error ... {} " , e.getMessage());
             return Response.responseBuilder(HttpStatus.BAD_REQUEST, chamadoDTO);
         }

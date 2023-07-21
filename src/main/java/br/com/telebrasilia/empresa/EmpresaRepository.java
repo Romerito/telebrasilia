@@ -18,6 +18,7 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     @Query("select e from Empresa e where e.cnpj = :cnpj and e.senha = :senha")
     Empresa findEmpresaByCNPJAndSenha(String cnpj, String senha);
 
+     @Query("select e from Empresa e where e.idEmpresa = :idEmpresa")
     Empresa findEmpresaByIdEmpresa(Long idEmpresa);
  
 }

@@ -27,19 +27,46 @@ public class ChamadoRepositoryImpl {
         CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createQuery(Tuple.class);
         
         Root<Chamado> root = criteriaQuery.from(Chamado.class);
-
-        Join<Empresa, Protocolo> idEmpresa = root.join("idEmpresa"); 
+        
+        Join<Chamado, Empresa> idEmpresa = root.join("idEmpresa");
+        Join<Chamado, Protocolo> idProtocolo = root.join("idProtocolo");
       
         Empresa empresa = new Empresa();
         empresa.setIdEmpresa(chamadoDTO.getIdEmpresa());
  
-        criteriaQuery
-                .multiselect(root, idEmpresa)
+        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null){
+         criteriaQuery
+                .multiselect(root, idEmpresa, idProtocolo)
                 .where(
-                        criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa())); 
+                        criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()));
+        }
+        
+        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() == null){
+           criteriaQuery
+                .multiselect(root, idEmpresa, idProtocolo)
+                .where(
+                        criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()),
+                        criteriaBuilder.like((idProtocolo.get("nuProtocolo").as(String.class)), "%" +  chamadoDTO.getNuProtocolo() + "%" ));
+        }
 
-        List<Tuple> resultList = entityManager.createQuery(criteriaQuery).getResultList();
-        return  resultList;
+          if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() != null){
+           criteriaQuery
+                .multiselect(root, idEmpresa, idProtocolo)
+                .where(
+                        criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()),
+                         criteriaBuilder.equal(idProtocolo.get("stProtocolo"), chamadoDTO.getStProtocolo()));
+        }
+        
+        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() != null){
+            criteriaQuery
+                .multiselect(root, idEmpresa, idProtocolo)
+                .where(
+                        criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()),
+                        criteriaBuilder.like((idProtocolo.get("nuProtocolo").as(String.class)), "%" +  chamadoDTO.getNuProtocolo() + "%" ),
+                        criteriaBuilder.equal(idProtocolo.get("stProtocolo"), chamadoDTO.getStProtocolo()));
+        }
+      
+         return  entityManager.createQuery(criteriaQuery).getResultList();
     }
 
 }

@@ -61,7 +61,7 @@ public class ChamadoService {
     chamado.setTpChamado(tpChamado);
     chamado.setDsChamado(dsChamado);
     chamado.setIdEmpresa(empresa);
-    chamado.setNoSoliccitante(empresa.getDsNoFantas());
+    chamado.setNoSolicitante(empresa.getDsNoFantas());
     chamado.setNoArquivo(noArquivo);
 
      
@@ -83,7 +83,7 @@ public class ChamadoService {
     protocolo.setCoUsuario("TELEBRASILIA");
     protocolo.setObservacao("PORTAL TELEBRASILIA");
     this.protocolo = protocoloRepository.save(protocolo);
-  
+    chamado.setIdProtocolo(protocolo);
 
    /** salvar arquivo */
     String pathFile =  this.filesStorageServiceImpl.save(files, protocolo.getNuProtocolo());

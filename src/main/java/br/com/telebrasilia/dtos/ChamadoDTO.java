@@ -20,6 +20,7 @@ public class ChamadoDTO {
     private Long idChamado;
     private Long coCompania;
     private Long idEmpresa;
+    private Long idProtocolo;
     private Long idCliente;
     private String noSoliccitante;
     private String tpChamado;
@@ -27,6 +28,8 @@ public class ChamadoDTO {
     private String lcAtendimento;
     private String coUf;
     private String noArquivo;
+    private String nuProtocolo;
+    private String stProtocolo;
     private MultipartFile file;
 
 }
