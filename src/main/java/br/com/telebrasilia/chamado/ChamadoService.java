@@ -2,6 +2,7 @@ package br.com.telebrasilia.chamado;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Tuple;
@@ -53,6 +54,8 @@ public class ChamadoService {
 
   private Chamado chamado = new Chamado();
 
+  private List<Tuple> chamados = new ArrayList<>();
+
   public Chamado save(MultipartFile[] files, String tpChamado, String dsChamado, Long idEmpresa, String noArquivo) {
 
     /** consultar empresa */
@@ -100,8 +103,36 @@ public class ChamadoService {
     return chamadoRepository.save(chamado);
   }
 
-  public List<Tuple> getChamados(ChamadoDTO chamadoDTO) {
-    return chamadoRepositoryImpl.getChamados(chamadoDTO);
+  public List<ChamadoDTO> getChamados(ChamadoDTO chamadoDTO) {
+    chamados = chamadoRepositoryImpl.getChamados(chamadoDTO);
+          
+      List<ChamadoDTO> listaChamadoDTOs = new ArrayList<>();
+        
+      Chamado filterChamdoDTO;
+      Protocolo filterProtocoloDTO;
+
+        for (Tuple tuple : chamados) {
+                chamadoDTO = new ChamadoDTO();
+
+                filterChamdoDTO = tuple.get(0, Chamado.class);
+                chamadoDTO.setIdChamado(filterChamdoDTO.getIdChamado());
+                chamadoDTO.setTpChamado(filterChamdoDTO.getTpChamado());
+                chamadoDTO.setDsChamado(filterChamdoDTO.getDsChamado());
+                chamadoDTO.setNoArquivo(filterChamdoDTO.getNoArquivo());
+                chamadoDTO.setNoSoliccitante(filterChamdoDTO.getNoSolicitante());    
+                chamadoDTO.setIdEmpresa(filterChamdoDTO.getIdEmpresa().getIdEmpresa());
+                chamadoDTO.setIdProtocolo(filterChamdoDTO.getIdProtocolo().getIdProtocolo());
+
+                filterProtocoloDTO = tuple.get(2, Protocolo.class);
+                chamadoDTO.setNuProtocolo(filterProtocoloDTO.getNuProtocolo());
+                chamadoDTO.setStProtocolo(filterProtocoloDTO.getStProtocolo());
+
+                chamadoDTO.setFiles(this.filesStorageServiceImpl.loadAll(chamadoDTO.getNuProtocolo()));
+           
+                listaChamadoDTOs.add(chamadoDTO);
+            }
+           
+   return listaChamadoDTOs;
   }
 
 }

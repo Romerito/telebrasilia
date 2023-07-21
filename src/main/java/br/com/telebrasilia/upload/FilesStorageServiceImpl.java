@@ -1,5 +1,6 @@
 package br.com.telebrasilia.upload;
 
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,17 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
- // private final Path root = Paths.get("uploads");
 
-  @Override
-  public void init() {
-/*     try {
-   //   Files.createDirectories(root);
-   // } catch (IOException e) {
-      throw new RuntimeException("Could not initialize folder for upload!");
-    //}
-  } */
-  }
   
   @Override
   public String save(MultipartFile[] files, String noProtocolo) {
@@ -45,18 +36,6 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
-  @Override
-  public void save(MultipartFile file) {
-    try {
-   //   Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-    } catch (Exception e) {
-      if (e instanceof FileAlreadyExistsException) {
-        throw new RuntimeException("A file of that name already exists.");
-      }
-
-      throw new RuntimeException(e.getMessage());
-    }
-  }
 
   @Override
   public Resource load(String filename) {
@@ -81,13 +60,13 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
-  public Stream<Path> loadAll() {
-    return null;
- //   try {
-     // return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
- //   } catch (IOException e) {
-     // throw new RuntimeException("Could not load the files!");
-   // }
+  public Stream<Path> loadAll(String noProtocolo) {
+    try {
+      final Path roots = Paths.get("uploads\\chamados\\" + noProtocolo);
+      return Files.walk(roots, 1).filter(path -> !path.equals(roots)).map(roots::relativize);
+    } catch (IOException e) {
+      throw new RuntimeException("Could not load the files!");
+    }
 
   }
 }

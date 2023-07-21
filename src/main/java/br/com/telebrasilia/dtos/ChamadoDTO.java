@@ -1,5 +1,8 @@
 package br.com.telebrasilia.dtos;
 
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +33,6 @@ public class ChamadoDTO {
     private String noArquivo;
     private String nuProtocolo;
     private String stProtocolo;
-    private MultipartFile file;
+    private Stream<Path> files;
 
 }

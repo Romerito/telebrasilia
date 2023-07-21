@@ -8,15 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FilesStorageService {
   
-  public void init();
-
-  public void save(MultipartFile file);
-
   public String save(MultipartFile[] file, String noProtocolo);
 
   public Resource load(String filename);
 
   public void deleteAll();
 
-  public Stream<Path> loadAll();
+  public Stream<Path> loadAll(String noProtocolo);
 }
