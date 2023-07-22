@@ -7,7 +7,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Tuple;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -68,13 +67,13 @@ public class ChamadoController {
         @ApiResponse(code = 400, message = "Erro ao criar chamado")
     })
     @PostMapping(path = "/chamado/")
-    public ResponseEntity<Object> save(@RequestParam("files") MultipartFile[] files, 
+    public ResponseEntity<Object> criarChamado(@RequestParam("files") MultipartFile[] files, 
     @RequestParam("tpChamado") String tpChamado, @RequestParam("dsChamado") String dsChamado,
     @RequestParam("idEmpresa") Long idEmpresa, @RequestParam("noArquivo") String noArquivo) {
         try {
             LOGGER.info("Saveing ... Chamado {} ... Empresa {} " ,  dsChamado, idEmpresa);
-            chamado = chamadoService.save(files, tpChamado, dsChamado, idEmpresa, noArquivo);
-            chamado.add(linkTo(methodOn((ChamadoController.class)).save(files, tpChamado, dsChamado, idEmpresa, noArquivo)).withSelfRel());
+            chamado = chamadoService.criarChamado(files, tpChamado, dsChamado, idEmpresa, noArquivo);
+            chamado.add(linkTo(methodOn((ChamadoController.class)).criarChamado(files, tpChamado, dsChamado, idEmpresa, noArquivo)).withSelfRel());
             LOGGER.info("Saved ... Chamado Idchamado... {} " ,  chamado.getIdChamado());
             return Response.responseBuilder(HttpStatus.OK,  chamado);
         } catch (Exception e) {
@@ -94,13 +93,38 @@ public class ChamadoController {
         @ApiResponse(code = 400, message = "Erro ao consultar chamados")
     })
     @PostMapping(path = "/chamados/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> consultarChamados(@RequestBody @Valid ChamadoDTO chamadoDTO) {
+    public ResponseEntity<Object> consultarChamado(@RequestBody @Valid ChamadoDTO chamadoDTO) {
         try {
             LOGGER.info("Consultando ... Chamados .... Empresa {} " ,  chamadoDTO.getIdEmpresa());
-            listaChamadoDTOs = chamadoService.getChamados(chamadoDTO);
-            chamado.add(linkTo(methodOn((ChamadoController.class)).consultarChamados(chamadoDTO)).withSelfRel());
+            listaChamadoDTOs = chamadoService.consultarChamado(chamadoDTO);
+            chamado.add(linkTo(methodOn((ChamadoController.class)).consultarChamado(chamadoDTO)).withSelfRel());
             LOGGER.info("Consultado ... Chamados {} " ,  listaChamadoDTOs);
             return Response.responseBuilder(HttpStatus.OK,  listaChamadoDTOs);
+        } catch (Exception e) {
+            LOGGER.info("Consultar chamados ... {} ... Empresa " , chamadoDTO.getIdEmpresa());
+            LOGGER.info("Error ... {} " , e.getMessage());
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, chamadoDTO);
+        }
+    }
+
+    
+     /**
+     * @param ChamadoDTO
+     * @return ChamadoResponse
+     */
+    @ApiOperation(value = "Responder chamado")
+        @ApiResponses(value = {
+        @ApiResponse(code = 201, message = "Responder chamado", response = Chamado.class),
+        @ApiResponse(code = 400, message = "Erro ao consultar chamados")
+    })
+    @PostMapping(path = "/responder/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> responderChamado(@RequestBody @Valid ChamadoDTO chamadoDTO) {
+        try {
+            LOGGER.info("Responder chamado  .... Empresa {} " ,  chamadoDTO.getIdEmpresa());
+            chamado = chamadoService.responderChamado(chamadoDTO);
+            chamado.add(linkTo(methodOn((ChamadoController.class)).responderChamado(chamadoDTO)).withSelfRel());
+            LOGGER.info("Consultado ... Chamados {} " ,  chamado);
+            return Response.responseBuilder(HttpStatus.OK,  chamado);
         } catch (Exception e) {
             LOGGER.info("Consultar chamados ... {} ... Empresa " , chamadoDTO.getIdEmpresa());
             LOGGER.info("Error ... {} " , e.getMessage());

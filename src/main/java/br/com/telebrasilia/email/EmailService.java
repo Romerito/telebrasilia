@@ -32,6 +32,21 @@ public class EmailService {
 
     private static String emailFrom  = "romerito.alencar@gmail.com";
     private static String www  = "http://wwww.telebrasilia.com.br";
+
+    public Email responderChamado(Protocolo protocolo, Empresa empresa, Chamado chamado) {
+      Email emailCliente = new Email();
+      EmailDTO emailEmpresaSend = EmailDTO.builder()
+                .ownerRef("Telebrasília")
+                .emailFrom(emailFrom)
+                .emailTo(empresa.getE_mail2())
+                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .build();
+        
+      BeanUtils.copyProperties(emailEmpresaSend, emailCliente);
+      return  send(emailCliente);
+    }
+
     
     public Email send(Protocolo protocolo, Empresa empresa, Chamado chamado) {
       Email emailTelebrasilia = new Email();
@@ -40,7 +55,7 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(emailFrom)
                 .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
-                .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para respnder " + www)
+                .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para respnder " + www)
                 .build();
         
       BeanUtils.copyProperties(emailTelebrasiliaSend, emailTelebrasilia);
@@ -52,7 +67,7 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
                 .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
-                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado:" + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
       BeanUtils.copyProperties(emailEmpresaSend, emailCliente);

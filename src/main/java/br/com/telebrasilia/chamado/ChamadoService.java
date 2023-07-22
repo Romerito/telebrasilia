@@ -56,54 +56,54 @@ public class ChamadoService {
 
   private List<Tuple> chamados = new ArrayList<>();
 
-  public Chamado save(MultipartFile[] files, String tpChamado, String dsChamado, Long idEmpresa, String noArquivo) {
+ 
+  public Chamado criarChamado(MultipartFile[] files, String tpChamado, String dsChamado, Long idEmpresa, String noArquivo) {
+      /** consultar empresa */
+      empresa = empresaRepository.findEmpresaByIdEmpresa(idEmpresa);
+      chamado = new Chamado();
+      chamado.setTpChamado(tpChamado);
+      chamado.setDsChamado(dsChamado);
+      chamado.setIdEmpresa(empresa);
+      chamado.setNoSolicitante(empresa.getDsNoFantas());
+      chamado.setNoArquivo(noArquivo);
 
-    /** consultar empresa */
-    empresa = empresaRepository.findEmpresaByIdEmpresa(idEmpresa);
-    chamado = new Chamado();
-    chamado.setTpChamado(tpChamado);
-    chamado.setDsChamado(dsChamado);
-    chamado.setIdEmpresa(empresa);
-    chamado.setNoSolicitante(empresa.getDsNoFantas());
-    chamado.setNoArquivo(noArquivo);
+      
 
-     
+      /** salvar protocolo */
+      this.protocolo = new Protocolo();
+      this.protocolo = protocoloRepository.save(protocolo);
+      protocolo.setCpfCnpj(empresa.getCnpj());
+      LocalDateTime date = LocalDateTime.now();
+      protocolo.setNuProtocolo("P" + date.getYear() + "" +
+                                date.getMonth().getValue() + "" + date.getDayOfMonth() + "" +
+                                date.getMinute() + "" + date.getSecond() + "" + protocolo.getIdProtocolo() +
+                                "" );
+                                protocolo.setNoSolicitante(empresa.getDsNoFantas());
+      protocolo.setTpSolicitacao(tpChamado);
+      Date data = new Date(System.currentTimeMillis());
+      protocolo.setDtAbertura(data);
+      protocolo.setStProtocolo("Aberto");
+      protocolo.setCoUsuario("TELEBRASILIA");
+      protocolo.setObservacao("PORTAL TELEBRASILIA");
+      this.protocolo = protocoloRepository.save(protocolo);
+      chamado.setIdProtocolo(protocolo);
 
-    /** salvar protocolo */
-    this.protocolo = new Protocolo();
-    this.protocolo = protocoloRepository.save(protocolo);
-    protocolo.setCpfCnpj(empresa.getCnpj());
-    LocalDateTime date = LocalDateTime.now();
-    protocolo.setNuProtocolo("P" + date.getYear() + "" +
-                              date.getMonth().getValue() + "" + date.getDayOfMonth() + "" +
-                              date.getMinute() + "" + date.getSecond() + "" + protocolo.getIdProtocolo() +
-                              "" );
-                              protocolo.setNoSolicitante(empresa.getDsNoFantas());
-    protocolo.setTpSolicitacao(tpChamado);
-    Date data = new Date(System.currentTimeMillis());
-    protocolo.setDtAbertura(data);
-    protocolo.setStProtocolo("ABERTO");
-    protocolo.setCoUsuario("TELEBRASILIA");
-    protocolo.setObservacao("PORTAL TELEBRASILIA");
-    this.protocolo = protocoloRepository.save(protocolo);
-    chamado.setIdProtocolo(protocolo);
-
-   /** salvar arquivo */
-    String pathFile =  this.filesStorageServiceImpl.save(files, protocolo.getNuProtocolo());
-    chamado.setNoArquivo(pathFile);
-
-
-    /** Enviar email */
-    emailService.send(protocolo, empresa, chamado);
-    LOGGER.info("NÚMERO DO PROTOCOLO CRIADO {}..........  ID_PROTOCOLO {}",
-    protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
+    /** salvar arquivo */
+      String pathFile =  this.filesStorageServiceImpl.save(files, protocolo.getNuProtocolo());
+      chamado.setNoArquivo(pathFile);
 
 
-    /** salvar chamado */
-    return chamadoRepository.save(chamado);
+      /** Enviar email */
+      emailService.send(protocolo, empresa, chamado);
+      LOGGER.info("NÚMERO DO PROTOCOLO CRIADO {}..........  ID_PROTOCOLO {}",
+      protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
+
+
+      /** salvar chamado */
+      return chamadoRepository.save(chamado);
   }
 
-  public List<ChamadoDTO> getChamados(ChamadoDTO chamadoDTO) {
+  public List<ChamadoDTO> consultarChamado(ChamadoDTO chamadoDTO) {
     chamados = chamadoRepositoryImpl.getChamados(chamadoDTO);
           
       List<ChamadoDTO> listaChamadoDTOs = new ArrayList<>();
@@ -133,6 +133,52 @@ public class ChamadoService {
             }
            
    return listaChamadoDTOs;
+  }
+
+
+  public Chamado responderChamado(ChamadoDTO chamadoDTO) {
+    /** consultar empresa */
+      empresa = empresaRepository.findEmpresaByIdEmpresa(chamadoDTO.getIdEmpresa());
+      chamado = new Chamado();
+      chamado.setTpChamado(chamadoDTO.getTpChamado());
+      chamado.setDsChamado(chamadoDTO.getDsProtocolo());
+      chamado.setIdEmpresa(empresa);
+      chamado.setNoSolicitante(empresa.getDsNoFantas());
+
+
+      /** salvar protocolo */
+      this.protocolo = new Protocolo();
+      this.protocolo = protocoloRepository.save(protocolo);
+      protocolo.setCpfCnpj(empresa.getCnpj());
+      protocolo.setNuProtocolo(chamadoDTO.getNuProtocolo());
+                                protocolo.setNoSolicitante(empresa.getDsNoFantas());
+      protocolo.setTpSolicitacao(chamadoDTO.getTpChamado());
+      Date data = new Date(System.currentTimeMillis());
+      
+      protocolo.setStProtocolo(chamadoDTO.getStProtocolo());
+      
+      
+      if(chamadoDTO.getStProtocolo().equals("Em execução")){
+        protocolo.setDtExecucao(data);
+      } else {
+                protocolo.setDtSolucao(data.toString());
+      }
+      
+      protocolo.setCoUsuario("TELEBRASILIA");
+      protocolo.setObservacao("PORTAL TELEBRASILIA");
+      this.protocolo = protocoloRepository.save(protocolo);
+     
+      
+      
+      /** Enviar email */
+      emailService.responderChamado(protocolo, empresa, chamado);
+      LOGGER.info("NÚMERO DO PROTOCOLO CRIADO {}..........  ID_PROTOCOLO {}",
+      protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
+      
+      
+      /** salvar chamado */
+      chamado.setIdProtocolo(protocolo);
+      return chamadoRepository.save(chamado);
   }
 
 }
