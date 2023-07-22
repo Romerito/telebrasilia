@@ -35,7 +35,15 @@ public class ChamadoRepositoryImpl {
         empresa.setIdEmpresa(chamadoDTO.getIdEmpresa());
  
       
-        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null ){
+        
+        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null && chamadoDTO.getIdEmpresa() == 3){
+         criteriaQuery
+                .multiselect(root, idEmpresa, idProtocolo);
+        }
+        
+        
+        
+        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null && chamadoDTO.getIdEmpresa() != 3){
          criteriaQuery
                 .multiselect(root, idEmpresa, idProtocolo)
                 .where(
