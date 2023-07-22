@@ -34,14 +34,39 @@ public class ChamadoRepositoryImpl {
         Empresa empresa = new Empresa();
         empresa.setIdEmpresa(chamadoDTO.getIdEmpresa());
  
-        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null){
+      
+        if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() == null ){
          criteriaQuery
                 .multiselect(root, idEmpresa, idProtocolo)
                 .where(
                         criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()));
         }
+
         
-        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() == null){
+        if(chamadoDTO.getStProtocolo() != null &&  chamadoDTO.getNuProtocolo() == null){
+            if (chamadoDTO.getStProtocolo().equalsIgnoreCase("Selecione")) {
+                criteriaQuery
+                        .multiselect(root, idEmpresa, idProtocolo)
+                        .where(
+               criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()),
+                              criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()));
+            }    
+
+        }
+
+
+        if(chamadoDTO.getStProtocolo() != null &&  chamadoDTO.getNuProtocolo() != null){
+            if (chamadoDTO.getStProtocolo().equalsIgnoreCase("Selecione") &&  chamadoDTO.getNuProtocolo() != null) {
+                criteriaQuery
+                        .multiselect(root, idEmpresa, idProtocolo)
+                        .where(
+               criteriaBuilder.equal(idEmpresa.get("idEmpresa"), empresa.getIdEmpresa()),
+                            criteriaBuilder.like((idProtocolo.get("nuProtocolo").as(String.class)), "%" +  chamadoDTO.getNuProtocolo() + "%" ));
+            }    
+
+        }
+        
+        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() == null) {
            criteriaQuery
                 .multiselect(root, idEmpresa, idProtocolo)
                 .where(
@@ -49,7 +74,7 @@ public class ChamadoRepositoryImpl {
                         criteriaBuilder.like((idProtocolo.get("nuProtocolo").as(String.class)), "%" +  chamadoDTO.getNuProtocolo() + "%" ));
         }
 
-          if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() != null){
+          if(chamadoDTO.getNuProtocolo() == null && chamadoDTO.getStProtocolo() != null && !chamadoDTO.getStProtocolo().equalsIgnoreCase("Selecione") ){
            criteriaQuery
                 .multiselect(root, idEmpresa, idProtocolo)
                 .where(
@@ -57,7 +82,7 @@ public class ChamadoRepositoryImpl {
                          criteriaBuilder.equal(idProtocolo.get("stProtocolo"), chamadoDTO.getStProtocolo()));
         }
         
-        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() != null){
+        if(chamadoDTO.getNuProtocolo() != null && chamadoDTO.getStProtocolo() != null && !chamadoDTO.getStProtocolo().equalsIgnoreCase("Selecione") ){
             criteriaQuery
                 .multiselect(root, idEmpresa, idProtocolo)
                 .where(
