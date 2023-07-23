@@ -1,7 +1,6 @@
 package br.com.telebrasilia.upload;
 
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,5 +13,5 @@ public interface FilesStorageService {
 
   public void deleteAll();
 
-  public Stream<Path> loadAll(String noProtocolo);
+  public Set<String> loadAll(String noProtocolo);
 }

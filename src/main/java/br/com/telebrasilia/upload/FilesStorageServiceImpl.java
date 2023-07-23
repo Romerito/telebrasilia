@@ -5,6 +5,8 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
@@ -60,13 +62,23 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
-  public Stream<Path> loadAll(String noProtocolo) {
+  public Set<String> loadAll(String noProtocolo) {
     try {
-      final Path roots = Paths.get("uploads\\chamados\\" + noProtocolo);
-      return Files.walk(roots, 1).filter(path -> !path.equals(roots)).map(roots::relativize);
-    } catch (IOException e) {
+      String dir =  Paths.get("uploads\\chamados\\" + noProtocolo).toString();
+      return    this.listFiles(dir);
+        } catch (Exception e) {
       throw new RuntimeException("Could not load the files!");
     }
 
   }
+
+  public Set<String> listFiles(String dir) throws IOException {
+    try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+        return stream
+          .filter(file -> !Files.isDirectory(file))
+          .map(Path::getFileName)
+          .map(Path::toString)
+          .collect(Collectors.toSet());
+    }
+}
 }

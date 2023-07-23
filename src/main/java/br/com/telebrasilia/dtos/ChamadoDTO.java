@@ -1,7 +1,6 @@
 package br.com.telebrasilia.dtos;
 
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +31,6 @@ public class ChamadoDTO {
     private String nuProtocolo;
     private String stProtocolo;
     private String dsProtocolo;
-    private Stream<Path> files;
+    private Set<String>  files;
 
 }
