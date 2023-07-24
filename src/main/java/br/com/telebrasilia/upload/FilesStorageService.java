@@ -1,6 +1,6 @@
 package br.com.telebrasilia.upload;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,5 +15,5 @@ public interface FilesStorageService {
 
   public void deleteAll();
 
-  public Set<String> loadAll(String noProtocolo);
+  public  List<String> loadAll(String noProtocolo);
 }

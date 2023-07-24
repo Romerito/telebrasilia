@@ -1,6 +1,6 @@
 package br.com.telebrasilia.dtos;
 
-import java.util.Set;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +31,7 @@ public class ChamadoDTO {
     private String nuProtocolo;
     private String stProtocolo;
     private String dsProtocolo;
-    private Set<String>  files;
+    private List<String> files;
     private String file;
 
 }

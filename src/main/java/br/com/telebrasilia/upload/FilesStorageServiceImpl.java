@@ -1,11 +1,14 @@
 package br.com.telebrasilia.upload;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,10 +51,20 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   }
 
   @Override
-  public Set<String> loadAll(String noProtocolo) {
+  public List<String>loadAll(String noProtocolo) {
     try {
+      List<String> filenames = new ArrayList<>();
       String dir =  Paths.get("uploads\\chamados\\" + noProtocolo).toString();
-      return    this.listFiles(dir);
+      
+      File file = new File(dir);
+      File[] arquivos = file.listFiles();
+  
+      for (File arquivo : arquivos) {
+          filenames.add(arquivo.getName());
+      }
+      System.out.println(filenames);
+      
+      return   filenames;
         } catch (Exception e) {
       throw new RuntimeException("Could not load the files!");
     }
