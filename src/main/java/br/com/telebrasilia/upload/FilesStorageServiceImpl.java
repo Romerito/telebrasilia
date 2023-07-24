@@ -1,6 +1,7 @@
 package br.com.telebrasilia.upload;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.com.telebrasilia.dtos.ChamadoDTO;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
@@ -36,24 +40,6 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 
       throw new RuntimeException(e.getMessage());
     }
-  }
-
-
-  @Override
-  public Resource load(String filename) {
-    return null;
-   // try {
-   //   Path file = root.resolve(filename);
-   //   Resource resource = new UrlResource(file.toUri());
-
-   //   if (resource.exists() || resource.isReadable()) {
-   //     return resource;
-  //    } else {
-    //    throw new RuntimeException("Could not read the file!");
-    //  }
-  //  } catch (MalformedURLException e) {
-  //    throw new RuntimeException("Error: " + e.getMessage());
-   // }
   }
 
   @Override
@@ -81,4 +67,24 @@ public class FilesStorageServiceImpl implements FilesStorageService {
           .collect(Collectors.toSet());
     }
 }
+
+ @Override
+ public Resource load(ChamadoDTO chamadoDTO) {
+   try {
+        final Path roots = Paths.get("uploads\\chamados\\" + chamadoDTO.getNuProtocolo());
+        Path file = roots.resolve(chamadoDTO.getNoArquivo());
+        Resource resource = new UrlResource(file.toUri());
+        
+        if (resource.exists() || resource.isReadable()) {
+          
+
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+
+  }
 }

@@ -32,5 +32,6 @@ public class ChamadoDTO {
     private String stProtocolo;
     private String dsProtocolo;
     private Set<String>  files;
+    private String file;
 
 }

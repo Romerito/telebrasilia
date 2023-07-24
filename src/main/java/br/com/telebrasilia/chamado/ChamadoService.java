@@ -10,6 +10,7 @@ import javax.persistence.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -180,5 +181,13 @@ public class ChamadoService {
       chamado.setIdProtocolo(protocolo);
       return chamadoRepository.save(chamado);
   }
+
+  public Resource charregarArquivo(ChamadoDTO chamadoDTO) {
+    return this.filesStorageServiceImpl.load(chamadoDTO);
+  }
+
+  
+
+
 
 }

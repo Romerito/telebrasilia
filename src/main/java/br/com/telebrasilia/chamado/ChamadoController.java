@@ -12,16 +12,22 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 import br.com.telebrasilia.dtos.ChamadoDTO;
 import br.com.telebrasilia.email.EmailService;
@@ -51,6 +57,8 @@ public class ChamadoController {
     private Chamado chamado = new  Chamado();
 
     private List<ChamadoDTO> listaChamadoDTOs = new ArrayList<>();
+
+    private ChamadoDTO chamadoDTO;
 
     public ChamadoController(ChamadoService chamadoService, EmailService emailService) {
         this.chamadoService = chamadoService;
@@ -132,4 +140,38 @@ public class ChamadoController {
         }
     }
     
+             /**
+     * @param ChamadoDTO
+     * @return ChamadoResponse
+     */
+    @ApiOperation(value = "Consultar chamados")
+        @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Chamados consultados", response = Chamado.class),
+        @ApiResponse(code = 400, message = "Erro ao consultar chamados")
+    })
+    
+    
+        
+    @GetMapping(path = "/file/{nuProtocolo}/{noArquivo}")
+    public ResponseEntity<Resource> charregar(@PathVariable String nuProtocolo , @PathVariable String noArquivo) {
+        try {
+            chamadoDTO = new ChamadoDTO();
+            chamadoDTO.setNuProtocolo(nuProtocolo);
+            chamadoDTO.setNoArquivo(noArquivo);
+            Resource file = this.chamadoService.charregarArquivo(chamadoDTO);
+            Path path = file.getFile()
+                            .toPath();
+    
+            return ResponseEntity.ok()
+                                 .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(path))
+                                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                                 .body(file);
+
+        } catch (Exception e) {
+            LOGGER.info("Consultar chamados ... {} ... Empresa " , chamadoDTO.getIdEmpresa());
+            LOGGER.info("Error ... {} " , e.getMessage());
+            return null;
+        }
+    }
+	
 }
