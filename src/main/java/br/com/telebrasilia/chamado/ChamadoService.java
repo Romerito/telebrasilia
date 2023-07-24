@@ -57,6 +57,46 @@ public class ChamadoService {
 
   private List<Tuple> chamados = new ArrayList<>();
 
+  public Chamado criarChamadoSemArquivo(String tpChamado, String dsChamado, Long idEmpresa) {
+      /** consultar empresa */
+      empresa = empresaRepository.findEmpresaByIdEmpresa(idEmpresa);
+      chamado = new Chamado();
+      chamado.setTpChamado(tpChamado);
+      chamado.setDsChamado(dsChamado);
+      chamado.setIdEmpresa(empresa);
+      chamado.setNoSolicitante(empresa.getDsNoFantas());
+      
+
+      /** salvar protocolo */
+      this.protocolo = new Protocolo();
+      this.protocolo = protocoloRepository.save(protocolo);
+      protocolo.setCpfCnpj(empresa.getCnpj());
+      LocalDateTime date = LocalDateTime.now();
+      protocolo.setNuProtocolo("P" + date.getYear() + "" +
+                                date.getMonth().getValue() + "" + date.getDayOfMonth() + "" +
+                                date.getMinute() + "" + date.getSecond() + "" + protocolo.getIdProtocolo() +
+                                "" );
+                                protocolo.setNoSolicitante(empresa.getDsNoFantas());
+      protocolo.setTpSolicitacao(tpChamado);
+      Date data = new Date(System.currentTimeMillis());
+      protocolo.setDtAbertura(data);
+      protocolo.setStProtocolo("Aberto");
+      protocolo.setCoUsuario("TELEBRASILIA");
+      protocolo.setObservacao("PORTAL TELEBRASILIA");
+      this.protocolo = protocoloRepository.save(protocolo);
+      chamado.setIdProtocolo(protocolo);
+
+
+      /** Enviar email */
+      emailService.send(protocolo, empresa, chamado);
+      LOGGER.info("NÚMERO DO PROTOCOLO CRIADO {}..........  ID_PROTOCOLO {}",
+      protocolo.getNuProtocolo(), protocolo.getIdProtocolo());
+
+
+      /** salvar chamado */
+      return chamadoRepository.save(chamado);
+  }
+  
  
   public Chamado criarChamado(MultipartFile[] files, String tpChamado, String dsChamado, Long idEmpresa, String noArquivo) {
       /** consultar empresa */

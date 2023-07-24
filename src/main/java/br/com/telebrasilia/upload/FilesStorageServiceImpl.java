@@ -62,11 +62,10 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       for (File arquivo : arquivos) {
           filenames.add(arquivo.getName());
       }
-      System.out.println(filenames);
       
       return   filenames;
         } catch (Exception e) {
-      throw new RuntimeException("Could not load the files!");
+        return null;
     }
 
   }

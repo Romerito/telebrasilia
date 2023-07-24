@@ -65,7 +65,7 @@ public class ChamadoController {
         this.emailService = emailService;
     }
 
-    /**
+        /**
      * @param ChamadoDTO
      * @return ChamadoResponse
      */
@@ -75,6 +75,32 @@ public class ChamadoController {
         @ApiResponse(code = 400, message = "Erro ao criar chamado")
     })
     @PostMapping(path = "/chamado/")
+    public ResponseEntity<Object> criarChamadoSemArquivo(
+            @RequestParam("tpChamado") String tpChamado, @RequestParam("dsChamado") String dsChamado,
+            @RequestParam("idEmpresa") Long idEmpresa) {
+        try {
+            LOGGER.info("Saveing ... Chamado {} ... Empresa {} " ,  dsChamado, idEmpresa);
+            chamado = chamadoService.criarChamadoSemArquivo(tpChamado, dsChamado, idEmpresa);
+            chamado.add(linkTo(methodOn((ChamadoController.class)).criarChamadoSemArquivo(tpChamado, dsChamado, idEmpresa)).withSelfRel());
+            LOGGER.info("Saved ... Chamado Idchamado... {} " ,  chamado.getIdChamado());
+            return Response.responseBuilder(HttpStatus.OK,  chamado);
+        } catch (Exception e) {
+            LOGGER.info("Chamado ... {} " , tpChamado);
+            LOGGER.info("Error ... {} " , e.getMessage());
+            return Response.responseBuilder(HttpStatus.BAD_REQUEST, tpChamado);
+        }
+    }
+
+    /**
+     * @param ChamadoDTO
+     * @return ChamadoResponse
+     */
+    @ApiOperation(value = "Criar chamado")
+        @ApiResponses(value = {
+        @ApiResponse(code = 201, message = "Chamado criado", response = Chamado.class),
+        @ApiResponse(code = 400, message = "Erro ao criar chamado")
+    })
+    @PostMapping(path = "/chamado-anexo/")
     public ResponseEntity<Object> criarChamado(@RequestParam("files") MultipartFile[] files, 
     @RequestParam("tpChamado") String tpChamado, @RequestParam("dsChamado") String dsChamado,
     @RequestParam("idEmpresa") Long idEmpresa, @RequestParam("noArquivo") String noArquivo) {
