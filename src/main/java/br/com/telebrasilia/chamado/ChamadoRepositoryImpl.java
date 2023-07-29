@@ -101,7 +101,7 @@ public class ChamadoRepositoryImpl {
                 .orderBy(criteriaBuilder.desc(root.get("idProtocolo")));
         }
       
-         return  entityManager.createQuery(criteriaQuery).setFirstResult(0).setMaxResults(10).getResultList();
+         return  entityManager.createQuery(criteriaQuery).setFirstResult(chamadoDTO.getPageNumber() - 1).setMaxResults(10).getResultList();
     }
 
 }

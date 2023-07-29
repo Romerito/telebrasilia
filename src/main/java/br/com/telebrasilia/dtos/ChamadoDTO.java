@@ -33,5 +33,7 @@ public class ChamadoDTO {
     private String dsProtocolo;
     private List<String> files;
     private String file;
+    private Integer pageNumber;
+    private Integer pageSize;
 
 }
