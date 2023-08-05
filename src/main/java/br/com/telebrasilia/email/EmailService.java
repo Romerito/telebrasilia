@@ -81,7 +81,7 @@ public class EmailService {
       EmailDTO emailDTOSend = EmailDTO.builder()
                 .ownerRef(empresa.getDsNoFantas())
                 .emailFrom(emailFrom)
-                .emailTo(empresa.getEmail2())
+                .emailTo(empresa.getE_mail2())
                 .subject("Acesso Telebrasília")
                 .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + "http://wwww.telebrasilia.com.br")
                 .build();

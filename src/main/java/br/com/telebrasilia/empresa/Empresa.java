@@ -35,20 +35,20 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private Long idEmpresa;
     private String dsNoFantas;
     private String dsEndereco;
-    private String dsNoBairro;
+    private String dsBairro;
     private String coCep;
     private String cnpj;
     private String inscEstadual;
     private String dsRazSocial;
     private Integer coClasse;
-    private String email;
+    private String e_mail;
     private String noContato;
     private String siteEmpresa;
     private String coNatureza;
     private Integer coCidade;
     private String e_mail2;
     private String inscrMunicipal;
-    private String dsComplemento;
+    private String dsCompl;
     private String stEmpresa;
     private String observacao;
     private String coUf;
@@ -56,5 +56,4 @@ public class Empresa  extends RepresentationModel<Empresa> {
     private String nvEmpresa;
     private String coordenada;
     private String senha;
-    private String email2;
 }
