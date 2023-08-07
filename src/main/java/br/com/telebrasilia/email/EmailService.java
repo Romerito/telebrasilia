@@ -30,7 +30,7 @@ public class EmailService {
   JavaMailSender emailSender;
 
 
-    private static String emailFrom  = "romerito.alencar@gmail.com";
+    private static String emailFrom  = "noc@telebrasilia.com";
     private static String www  = "http://wwww.telebrasilia.com.br";
 
     public Email responderChamado(Protocolo protocolo, Empresa empresa, Chamado chamado) {
