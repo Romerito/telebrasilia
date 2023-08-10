@@ -31,7 +31,7 @@ public class EmailService {
 
 
     private static String emailFrom  = "noc@telebrasilia.com";
-    private static String www  = "http://wwww.telebrasilia.com.br";
+    private static String www  = "http://portalweb.telebrasilia.com/4ABL";
 
     public Email responderChamado(Protocolo protocolo, Empresa empresa, Chamado chamado) {
       Email emailCliente = new Email();
@@ -39,7 +39,7 @@ public class EmailService {
                 .ownerRef("Telebrasília")
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
-                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
                 .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
@@ -54,7 +54,7 @@ public class EmailService {
                 .ownerRef(empresa.getDsNoFantas())
                 .emailFrom(emailFrom)
                 .emailTo(emailFrom)
-                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
                 .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para respnder " + www)
                 .build();
         
@@ -66,7 +66,7 @@ public class EmailService {
                 .ownerRef("Telebrasília")
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
-                .subject("PROTOCOLO TELEBRASíLIA " + protocolo.getNuProtocolo())
+                .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
                 .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
