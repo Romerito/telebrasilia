@@ -31,7 +31,7 @@ public class EmailService {
 
 
     private static String emailFrom  = "noc@telebrasilia.com";
-    private static String www  = "http://portalweb.telebrasilia.com/4ABL";
+    private static String www  = "http://telebrasilia.com/portalweb";
 
     public Email responderChamado(Protocolo protocolo, Empresa empresa, Chamado chamado) {
       Email emailCliente = new Email();
