@@ -31,7 +31,7 @@ public class EmailService {
 
 
     private static String emailFrom  = "noc@telebrasilia.com";
-    private static String www  = "http://portalweb.telebrasilia.com/4ABL";
+    private static String www  = "http://pw.telebrasilia.com/portalweb";
 
     public Email responderChamado(Protocolo protocolo, Empresa empresa, Chamado chamado) {
       Email emailCliente = new Email();
@@ -40,7 +40,9 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
                 .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
-                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + 
+                		chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + 
+                		"\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
       BeanUtils.copyProperties(emailEmpresaSend, emailCliente);
@@ -55,7 +57,10 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(emailFrom)
                 .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
-                .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para respnder " + www)
+                .text(empresa.getDsNoFantas()  + " \n\r\n" + "Número do protocolo: " + 
+                		protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + 
+                		"\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + 
+                		"\n\r\n Clique no link para respnder " + www)
                 .build();
         
       BeanUtils.copyProperties(emailTelebrasiliaSend, emailTelebrasilia);
@@ -67,7 +72,9 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
                 .subject("PROTOCOLO TELEBRASÍLIA " + protocolo.getNuProtocolo())
-                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + " \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
+                .text("Protocolo de atendimento  "  + protocolo.getNuProtocolo() + 
+                		" \n\r\nTipo do chamado: " + chamado.getTpChamado() + "\n\r\nStatus do chamado: " + 
+                		protocolo.getStProtocolo() + "\n\r\n Clique no link para acompanhar  " + www)
                 .build();
         
       BeanUtils.copyProperties(emailEmpresaSend, emailCliente);
@@ -83,7 +90,8 @@ public class EmailService {
                 .emailFrom(emailFrom)
                 .emailTo(empresa.getE_mail2())
                 .subject("Acesso Telebrasília")
-                .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + " \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + "http://wwww.telebrasilia.com.br")
+                .text( empresa.getDsNoFantas()  + " \n \r\n" + "Usuário: " + empresa.getCnpj() + 
+                		" \n\r\nSenha: " + empresa.getSenha() + " \n\r\nClique no link e faça login " + www)
                 .build();
         
       BeanUtils.copyProperties(emailDTOSend, email);
