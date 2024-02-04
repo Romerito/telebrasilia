@@ -8,9 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @Builder
 @Data
 @AllArgsConstructor
@@ -22,6 +21,7 @@ public class ChamadoDTO {
     private Long idEmpresa;
     private Long idProtocolo;
     private Long idCliente;
+    private Long idEmprad;
     private String noSoliccitante;
     private String tpChamado;
     private String dsChamado;
@@ -35,5 +35,14 @@ public class ChamadoDTO {
     private String file;
     private Integer pageNumber;
     private Integer pageSize;
-
+    private String hrExecucao;
+    private String dtAbertura;
+    private String dtExecucao;
+    private String dtSolucao;
+    private Integer totalProtocolos;
+    private String cnpj;
+    private String scChamado;
+    private Integer finalizado;
+    private String dataAbertura;
+    private StringBuilder duracaoChamado;
 }

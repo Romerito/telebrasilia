@@ -1,16 +1,12 @@
 package br.com.telebrasilia.empresa;
 
-
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.hateoas.RepresentationModel;
 
 import lombok.AllArgsConstructor;
@@ -19,17 +15,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "empresa")
-public class Empresa  extends RepresentationModel<Empresa> {
-    
+public class Empresa extends RepresentationModel<Empresa> {
+
     @Id
     @GeneratedValue
     private Long idEmpresa;

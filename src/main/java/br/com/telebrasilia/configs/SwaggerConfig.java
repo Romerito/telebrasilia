@@ -1,6 +1,5 @@
 package br.com.telebrasilia.configs;
 
-
 import static springfox.documentation.builders.PathSelectors.regex;
 
 import java.util.Collections;
@@ -16,13 +15,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

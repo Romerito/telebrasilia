@@ -1,10 +1,9 @@
 package br.com.telebrasilia.enums;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
-public enum EmailStatus {
+public enum EmailStatusEnum {
     ERROR,
     SENT
 }

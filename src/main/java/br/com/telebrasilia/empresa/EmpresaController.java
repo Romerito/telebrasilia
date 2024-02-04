@@ -27,24 +27,23 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @Validated
 @RestController
-@RequestMapping("/api") 
+@RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class EmpresaController {
 
     private static final Logger LOGGER = LogManager.getLogger(EmpresaController.class);
-    
+
     @Autowired
     EmpresaService empresaService;
 
     @Autowired
     EmailService emailService;
 
-    private Empresa empresa = new  Empresa();
+    private Empresa empresa = new Empresa();
 
     public EmpresaController(EmpresaService empresaService, EmailService emailService) {
         this.empresaService = empresaService;
@@ -54,24 +53,24 @@ public class EmpresaController {
     /**
      * @param LoginDTO
      * @return Response
-    */
+     */
     @ApiOperation(value = "Consultar por CNPJ")
-        @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Senha consultada", response = Empresa.class),
-        @ApiResponse(code = 400, message = "Erro ao consultar senha")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Senha consultada", response = Empresa.class),
+            @ApiResponse(code = 400, message = "Erro ao consultar senha")
     })
     @GetMapping(path = "/empresa/")
     public ResponseEntity<Object> findByCNPJ(@RequestParam(name = "cnpj") String cnpj) {
         try {
-            LOGGER.info("Consulting ... CNPJ {} " ,  cnpj);
+            LOGGER.info("Consulting ... CNPJ {} ", cnpj);
             empresa = empresaService.findByCNPJ(cnpj);
             emailService.send(empresa);
             empresa.add(linkTo(methodOn((EmpresaController.class)).findByCNPJ(cnpj)).withSelfRel());
-            LOGGER.info("Consulted ... CNPJ {} " ,  empresa.getCnpj());
-            return Response.responseBuilder(HttpStatus.OK,  empresa);
+            LOGGER.info("Consulted ... CNPJ {} ", empresa.getCnpj());
+            return Response.responseBuilder(HttpStatus.OK, empresa);
         } catch (Exception e) {
-            LOGGER.info("CNPJ ... {} " , cnpj);
-            LOGGER.info("Error ... {} " , e.getMessage());
+            LOGGER.info("CNPJ ... {} ", cnpj);
+            LOGGER.info("Error ... {} ", e.getMessage());
             return Response.responseBuilder(HttpStatus.BAD_REQUEST, empresa);
         }
     }
@@ -81,21 +80,21 @@ public class EmpresaController {
      * @return Response
      */
     @ApiOperation(value = "Consultar por CNPJ e Senha")
-        @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Login consultado", response = Empresa.class),
-        @ApiResponse(code = 400, message = "Erro ao consultar login")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Login consultado", response = Empresa.class),
+            @ApiResponse(code = 400, message = "Erro ao consultar login")
     })
     @PostMapping(path = "/login/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> findEmpresaByCNPJAndSenha(@RequestBody @Valid LoginDTO loginDTO) {
         try {
-            LOGGER.info("Consulting ... Login {} " ,  loginDTO.getCnpj());
+            LOGGER.info("Consulting ... Login {} ", loginDTO.getCnpj());
             this.empresa = empresaService.findByCNPJAndSenha(loginDTO.getCnpj(), loginDTO.getSenha());
             empresa.add(linkTo(methodOn((EmpresaController.class)).findEmpresaByCNPJAndSenha(loginDTO)).withSelfRel());
-            LOGGER.info("Consulted ... Login {} " ,  empresa.getCnpj());
-            return Response.responseBuilder(HttpStatus.OK,  empresa);
+            LOGGER.info("Consulted ... Login {} ", empresa.getCnpj());
+            return Response.responseBuilder(HttpStatus.OK, empresa);
         } catch (Exception e) {
-            LOGGER.info("Login ... {} " , loginDTO.getCnpj());
-            LOGGER.info("Error ... {} " , e.getMessage());
+            LOGGER.info("Login ... {} ", loginDTO.getCnpj());
+            LOGGER.info("Error ... {} ", e.getMessage());
             return Response.responseBuilder(HttpStatus.BAD_REQUEST, loginDTO);
         }
     }

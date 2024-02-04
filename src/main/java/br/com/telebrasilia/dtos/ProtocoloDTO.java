@@ -8,9 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @Builder
 @Data
 @AllArgsConstructor

@@ -1,6 +1,5 @@
 package br.com.telebrasilia.dtos;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -8,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
 @Builder
 @Data

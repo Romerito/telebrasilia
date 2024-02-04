@@ -1,6 +1,8 @@
-package br.com.telebrasilia.chamado;
+package br.com.telebrasilia.aberturaChamado;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -9,24 +11,25 @@ import javax.persistence.Table;
 import org.springframework.hateoas.RepresentationModel;
 
 import br.com.telebrasilia.empresa.Empresa;
-import br.com.telebrasilia.protocolo.Protocolo;
+import br.com.telebrasilia.empresaDadosad.EmpresaDadosad;
+import br.com.telebrasilia.enums.ChamadoSituacaoEnum;
+import br.com.telebrasilia.protocoloAtendimento.ProtocoloAtendimento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @author  Romerito Alencar
+ * @author Romerito Alencar
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "abertura_chamado")
-public class Chamado  extends RepresentationModel<Chamado> {
-    
+public class AberturaChamado extends RepresentationModel<AberturaChamado> {
+
     @Id
     @GeneratedValue
     private Long idChamado;
@@ -41,5 +44,9 @@ public class Chamado  extends RepresentationModel<Chamado> {
     private String coUf;
     private String noArquivo;
     @OneToOne()
-    private Protocolo idProtocolo;
+    private ProtocoloAtendimento idProtocolo;
+    @Enumerated(EnumType.STRING)
+    private ChamadoSituacaoEnum scChamado;
+    @OneToOne()
+    private EmpresaDadosad idEmprad;
 }
